@@ -37,6 +37,8 @@ ANSI_SAVE_SCREEN :: ansi.CSI + "?47h"
 ANSI_RESTORE_SCREEN :: ansi.CSI + "?47l"
 ANSI_ENTER_ALT_BUFFER :: ansi.CSI + "?1049h"
 ANSI_LEAVE_ALT_BUFFER :: ansi.CSI + "?1049l"
+ANSI_ENABLE_AUTOWRAP :: ansi.CSI + "?7h"
+ANSI_DISABLE_AUTOWRAP :: ansi.CSI + "?7l"
 
 term_init :: proc() {
 
@@ -64,6 +66,7 @@ term_init :: proc() {
 	term_print(ANSI_SAVE_CURSOR)
 	term_print(ANSI_SAVE_SCREEN)
 	term_print(ANSI_ENTER_ALT_BUFFER)
+	term_print(ANSI_DISABLE_AUTOWRAP)
 	term_clear()
 
 	libc.signal(signal_SIGWINCH, handle_winch)
@@ -74,6 +77,7 @@ term_deinit :: proc() {
 	term_clear()
 	term_print(ANSI_LEAVE_ALT_BUFFER)
 	term_print(ANSI_SHOW_CURSOR)
+	term_print(ANSI_ENABLE_AUTOWRAP)
 	term_reset()
 
 	posix.tcsetattr(tty, .TCSAFLUSH, &originalTermios)
