@@ -1,4 +1,3 @@
-#+feature dynamic-literals
 package casino
 
 import "core:math/rand"
@@ -20,7 +19,7 @@ Outcome :: enum (byte) {
 	Sevens,
 }
 
-FACE_ICON_MAP := map[Face]string {
+FACE_ICON_MAP := [Face]string {
 	.Seven  = "'7",
 	.Bell   = "🔔",
 	.Lemon  = "🍋",
@@ -29,7 +28,7 @@ FACE_ICON_MAP := map[Face]string {
 	.Melon  = "🍉",
 }
 
-OUTCOME_MULT_MAP := map[Outcome]int {
+OUTCOME_MULT_MAP := [Outcome]int {
 	.Nothing    = 0,
 	.ThreeFruit = 2,
 	.SameFruit  = 10,
