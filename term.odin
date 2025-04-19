@@ -8,8 +8,19 @@ import "core:fmt"
 import "core:log"
 import "core:os"
 import "core:strings"
-import "core:sys/linux"
 import "core:sys/posix"
+
+when ODIN_OS == .Windows {
+	foreign import libc_ "system:libucrt.lib"
+} else when ODIN_OS == .Darwin {
+	foreign import libc_ "system:System.framework"
+} else {
+	foreign import libc_ "system:c"
+}
+
+foreign libc_ {
+	ioctl :: proc(fd: c.int, request: c.ulong, arg: rawptr) -> c.int ---
+}
 
 termWidth: int
 termHeight: int
@@ -80,7 +91,7 @@ term_sync_size :: proc() {
 
 	w: termios_winsize
 
-	linux.ioctl(linux.Fd(tty), termios_TIOCGWINSZ, uintptr(&w))
+	ioctl(c.int(tty), termios_TIOCGWINSZ, &w)
 	termHeight = int(w.ws_row)
 	termWidth = int(w.ws_col)
 }
