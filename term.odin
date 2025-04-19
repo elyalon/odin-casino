@@ -124,7 +124,10 @@ term_cursor_left :: proc(n: int = 1) {
 term_set :: proc(modes: ..any) {
 	assert(len(modes) >= 1)
 	rep := strings.repeat(";%s", len(modes), context.temp_allocator)[1:]
-	fmt_ := strings.concatenate([]string{ansi.CSI, rep, "m"}, allocator = context.temp_allocator)
+	fmt_ := strings.concatenate(
+		[]string{ansi.CSI, rep, ansi.SGR},
+		allocator = context.temp_allocator,
+	)
 
 	term_printf(fmt_, ..modes)
 	free_all(context.temp_allocator)
